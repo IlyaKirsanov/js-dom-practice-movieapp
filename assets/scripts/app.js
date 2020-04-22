@@ -8,12 +8,29 @@ const entryTextSection = document.getElementById('entry-text');
 
 const movies = [];
 
-const updateUI = ()=>{
-    if(movies.length===0){
+const updateUI = () => {
+    if (movies.length === 0) {
         entryTextSection.style.display = 'block';
-    }else {
+    } else {
         entryTextSection.style.display = 'none';
     }
+};
+
+const renderNewMovieElement = (title, imageUrl, rating) => {
+    const newMovieElement = document.createElement('li');
+    newMovieElement.className = 'movie-element';
+    newMovieElement.innerHTML = `
+        <div class="movie-element__image">
+          <img src="${imageUrl}" alt="${title}" class="">     
+        </div>
+        <div class="movie-element__info">
+          <h2 class="movie-">${title}</h2>
+          <p>${rating}/5 stars</p>
+        </div>
+    `;
+
+    const listRoot = document.getElementById('movie-list');
+    listRoot.append(newMovieElement)
 };
 
 const toggleMovieModal = () => {
@@ -25,11 +42,11 @@ const backdropToggle = () => {
     backdrop.classList.toggle('visible');
 };
 
-const backdropClickHandler = () =>{
+const backdropClickHandler = () => {
     toggleMovieModal();
 };
 
-const cancelAddMovieHandler = () =>{
+const cancelAddMovieHandler = () => {
     toggleMovieModal();
     clearMovieInput();
 };
@@ -45,11 +62,11 @@ const addMovieHandler = () => {
     const imageUrlValue = userInputs[1].value;
     const ratingValue = userInputs[2].value;
 
-    if(titleValue.trim()==='' ||
-        imageUrlValue.trim()=== ''||
-        ratingValue.trim()===''||
-        +ratingValue<1 ||
-        +ratingValue>5){
+    if (titleValue.trim() === '' ||
+        imageUrlValue.trim() === '' ||
+        ratingValue.trim() === '' ||
+        +ratingValue < 1 ||
+        +ratingValue > 5) {
         alert('Pleas enter valid values (rating 1-5)')
     }
 
@@ -62,6 +79,7 @@ const addMovieHandler = () => {
     movies.push(newMovie);
     console.log(movies);
     toggleMovieModal();
+    renderNewMovieElement(newMovie.title, newMovie.image, newMovie.rating);
     clearMovieInput();
     updateUI();
 };
